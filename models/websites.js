@@ -14,6 +14,9 @@ const websiteSchema = new mongoose.Schema(
     price: {
       type: Number,
     },
+    currency: {
+      type: String,
+    },
     freeSits: {
       type: Number,
     },

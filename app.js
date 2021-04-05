@@ -4,6 +4,7 @@ const cron = require("node-cron");
 
 const sailingFactory = require("./sites/sailingFactory");
 const kubryk = require("./sites/kubryk");
+const morskieRejsy = require("./sites/morskieRejsy");
 
 const PORT = process.env.PORT || 8080;
 
@@ -24,10 +25,11 @@ mongoose
     console.log(err);
   });
 
-// cron.schedule("*/1 * * * *", () => {
-sailingFactory.saveToDb();
-kubryk.saveToDb();
-// });
+cron.schedule("*/15 * * * *", () => {
+  sailingFactory.saveToDb();
+  kubryk.saveToDb();
+  morskieRejsy.saveToDb();
+});
 
 app.listen(PORT, function () {
   console.log("App listening on port " + PORT);
