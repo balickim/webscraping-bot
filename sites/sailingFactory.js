@@ -3,7 +3,6 @@ const url = "https://sailingfactory.pl/rejsy-morskie";
 const cheerio = require("cheerio");
 const fetch = require("node-fetch");
 const Website = require("../models/websites");
-const SHA256 = require("crypto-js/sha256");
 
 class sailingFactory {
   static get() {
@@ -33,18 +32,43 @@ class sailingFactory {
 
   static saveToDb() {
     this.get().then((data) => {
-      let now = new Date().toISOString();
-      console.log(now + " - " + url);
-      data.forEach(function (el, i) {
-        let website = new Website({
-          index: SHA256(el.title + el.link + url).toString(),
-          title: el.title,
-          link: el.link,
-          siteUrl: url,
+      if (data && data.length !== 0) {
+        Website.deleteMany({ siteUrl: url }, function (err) {
+          if (err) console.log(err);
+          console.log(
+            new Date().toISOString() +
+              " - " +
+              "Successful deletion of old data" +
+              " - " +
+              url
+          );
+        }).then(() => {
+          console.log(
+            new Date().toISOString() +
+              " - " +
+              "Inserting new data" +
+              " - " +
+              url
+          );
+
+          data.forEach(function (el, i) {
+            let website = new Website({
+              title: el.title,
+              link: el.link,
+              siteUrl: url,
+            });
+            website.save(data);
+          });
         });
-        // website.save(data);
-        website.update(data, { upsert: true });
-      });
+      } else {
+        console.error(
+          new Date().toISOString() +
+            " - " +
+            "Problem with the website - no data" +
+            " - " +
+            url
+        );
+      }
     });
   }
 }

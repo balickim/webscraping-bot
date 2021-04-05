@@ -1,11 +1,11 @@
 {
   "name": "webscraper",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "Web scraper for sailman project. Will gather data from various webservices and save them to the same db as sailman.",
   "main": "app.js",
   "scripts": {
     "dev": "yarn nodemon .",
-    "production": "yarn node ."
+    "start": "yarn node . > app.log 2> error.log"
   },
   "author": "balickim",
   "license": "ISC",

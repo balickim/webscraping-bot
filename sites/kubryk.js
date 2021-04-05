@@ -9,7 +9,6 @@ const subPages = [
 const cheerio = require("cheerio");
 const fetch = require("node-fetch");
 const Website = require("../models/websites");
-const SHA256 = require("crypto-js/sha256");
 
 class kubryk {
   static get() {
@@ -73,32 +72,49 @@ class kubryk {
 
   static saveToDb() {
     this.get().then((data) => {
-      let now = new Date().toISOString();
-      console.log(now + " - updated - " + url);
-      data.forEach(function (el, i) {
-        el.forEach((value) => {
-          let website = new Website({
-            index: SHA256(
-              value.route +
-                value.dateRange +
-                value.price +
-                value.freeSits +
-                value.link +
-                value.area +
-                url
-            ).toString(),
-            route: value.route,
-            dateRange: value.dateRange,
-            price: parseInt(value.price),
-            freeSits: parseInt(value.freeSits),
-            link: value.link,
-            area: value.area,
-            siteUrl: url,
+      if (data && data.length !== 0) {
+        Website.deleteMany({ siteUrl: url }, function (err) {
+          if (err) console.log(err);
+          console.log(
+            new Date().toISOString() +
+              " - " +
+              "Successful deletion of old data" +
+              " - " +
+              url
+          );
+        }).then(() => {
+          console.log(
+            new Date().toISOString() +
+              " - " +
+              "Inserting new data" +
+              " - " +
+              url
+          );
+
+          data.forEach(function (el, i) {
+            el.forEach((value) => {
+              let website = new Website({
+                route: value.route,
+                dateRange: value.dateRange,
+                price: parseInt(value.price),
+                freeSits: parseInt(value.freeSits),
+                link: value.link,
+                area: value.area,
+                siteUrl: url,
+              });
+              website.save(data);
+            });
           });
-          // website.save(data);
-          website.update(data, { upsert: true });
         });
-      });
+      } else {
+        console.error(
+          new Date().toISOString() +
+            " - " +
+            "Problem with the website - no data" +
+            " - " +
+            url
+        );
+      }
     });
   }
 }
