@@ -4,7 +4,7 @@ const cheerio = require("cheerio");
 const fetch = require("node-fetch");
 const Website = require("../models/websites");
 
-class sailingFactory {
+class morskieRejsy {
   static get() {
     return fetch(url)
       .then((res) => res.text())
@@ -131,4 +131,4 @@ class sailingFactory {
   }
 }
 
-module.exports = sailingFactory;
+module.exports = morskieRejsy;
