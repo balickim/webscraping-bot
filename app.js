@@ -6,6 +6,7 @@ const sailingFactory = require("./sites/sailingFactory");
 const kubryk = require("./sites/kubryk");
 const morskieRejsy = require("./sites/morskieRejsy");
 const roza = require("./sites/roza");
+const theBoatTrip = require("./sites/theBoatTrip");
 
 const PORT = process.env.PORT || 8080;
 
@@ -31,6 +32,7 @@ cron.schedule("*/15 * * * *", () => {
   kubryk.saveToDb();
   morskieRejsy.saveToDb();
   roza.saveToDb();
+  theBoatTrip.saveToDb();
 });
 
 app.listen(PORT, function () {
