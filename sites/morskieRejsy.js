@@ -71,6 +71,14 @@ class sailingFactory {
           .children("span")
           .text()
           .substring(priceIndex, yachtIndex),
+        route: $(el)
+          .children("div[class='text']")
+          .children("p")
+          .children("span")
+          .children("span")
+          .text()
+          .substring(routeIndex + 7, dateRangeIndex)
+          .trim(),
       });
     });
     return found;
@@ -101,6 +109,7 @@ class sailingFactory {
             let website = new Website({
               title: el.title.trim(),
               link: el.link,
+              route: el.route,
               dateRange: el.dateRange,
               price: el.price.match(/\d+/) ? el.price.match(/\d+/)[0] : -1,
               currency: el.price.includes("pln") ? "pln" : "eur",

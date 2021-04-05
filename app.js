@@ -5,6 +5,7 @@ const cron = require("node-cron");
 const sailingFactory = require("./sites/sailingFactory");
 const kubryk = require("./sites/kubryk");
 const morskieRejsy = require("./sites/morskieRejsy");
+const roza = require("./sites/roza");
 
 const PORT = process.env.PORT || 8080;
 
@@ -29,6 +30,7 @@ cron.schedule("*/15 * * * *", () => {
   sailingFactory.saveToDb();
   kubryk.saveToDb();
   morskieRejsy.saveToDb();
+  roza.saveToDb();
 });
 
 app.listen(PORT, function () {
