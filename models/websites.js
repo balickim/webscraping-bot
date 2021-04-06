@@ -11,6 +11,9 @@ const websiteSchema = new mongoose.Schema(
     route: {
       type: String,
     },
+    info: {
+      type: String,
+    },
     price: {
       type: Number,
     },
