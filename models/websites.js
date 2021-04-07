@@ -14,6 +14,9 @@ const websiteSchema = new mongoose.Schema(
     info: {
       type: String,
     },
+    organizer: {
+      type: String,
+    },
     price: {
       type: Number,
     },
